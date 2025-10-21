@@ -1,0 +1,28 @@
+# Node
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Logs
+logs
+*.log
+
+# Editor
+.vscode
+.idea
+
+# Next.js
+.next
+out
+
+# Build
+coverage
+dist
+.turbo
+
+# Env
+.env
+.env.local
+.env.*.local
