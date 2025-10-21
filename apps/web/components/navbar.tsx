@@ -16,9 +16,15 @@ export function Navbar() {
             <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground">
               About
             </Link>
+            <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground">
+              Dashboard
+            </Link>
           </nav>
         </div>
         <div className="flex items-center gap-2">
+          <Link href="/auth/signin" className="text-sm text-muted-foreground hover:text-foreground">
+            Sign in
+          </Link>
           <ThemeToggle />
         </div>
       </div>
