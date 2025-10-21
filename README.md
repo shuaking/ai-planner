@@ -1,3 +1,5 @@
+[Project Charter / 项目书](./PROJECT.md)
+
 # Next.js Monorepo Bootstrap
 
 This repository contains a minimal Next.js monorepo (single app) configured with:
