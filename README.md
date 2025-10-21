@@ -56,10 +56,39 @@ Optional
 - SUPABASE_SERVICE_ROLE — Supabase service role key for server-side admin tasks only. Do not expose to the client.
 - RESEND_API_KEY — If using Resend to send emails (e.g., `re_...`).
 
+Database/Setup
+
+- DATABASE_URL — Used by Prisma. Defaults to SQLite for local development (`file:./prisma/dev.db`).
+- SETUP_TOKEN — One-time token to call the protected setup endpoint (see below).
+
 Region notes
 
 - Choose a Supabase project region close to your Vercel deployment region to minimize latency.
 - For local development, set `NEXTAUTH_URL` to `http://localhost:3000`. In production on Vercel, set it to your canonical `https://<your-app>.vercel.app` (or your custom domain) to avoid callback/domain mismatch issues.
+
+## One-time setup (migrations + seed)
+
+A protected setup endpoint is available to apply the initial database schema and seed default templates on the first deploy. It is idempotent and will no-op on subsequent calls.
+
+1) Configure environment variables in Vercel
+
+- Set `DATABASE_URL` (SQLite for dev, Postgres in prod if you prefer)
+- Set a strong `SETUP_TOKEN`
+
+2) Trigger setup once after your first deploy
+
+Replace `YOUR_URL` and `YOUR_TOKEN` and run:
+
+- curl:
+  - `curl -X POST "https://YOUR_URL/api/admin/setup" -H "x-setup-token: YOUR_TOKEN"`
+
+If successful, the response will be `{ status: "ok", migrated: true, seeded: true }`.
+If the setup has already run, the response will be `{ status: "ok", alreadySetup: true }`.
+
+Notes
+
+- The endpoint is implemented to be idempotent using a `Setting` table flag (`setup_complete`).
+- For local development, Prisma is configured with SQLite by default. You can switch the datasource provider in `apps/web/prisma/schema.prisma` and update `DATABASE_URL` accordingly.
 
 ## Pre-commit hooks
 
