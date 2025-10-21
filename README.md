@@ -8,6 +8,12 @@ This repository contains a minimal Next.js monorepo (single app) configured with
 - Husky + lint-staged pre-commit hooks
 - GitHub Actions CI (lint, test, build)
 
+## Deploy to Vercel
+
+Deploy this repository to Vercel with a single click. The flow will prompt you for the required environment variables.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/shuaking/ai-planner&root-directory=apps/web&env=OPENAI_API_KEY,NEXTAUTH_SECRET,NEXTAUTH_URL,SUPABASE_URL,SUPABASE_ANON_KEY,EMAIL_FROM&envDescription=Required%20environment%20variables%20for%20OpenAI%2C%20NextAuth%2C%20Supabase%2C%20and%20email%20sending.%20See%20README%20for%20details.&envLink=https://github.com/shuaking/ai-planner#environment-variables)
+
 ## Structure
 
 - apps/
@@ -32,9 +38,28 @@ This repository contains a minimal Next.js monorepo (single app) configured with
 
 ## Environment variables
 
-Copy `.env.example` to `.env.local` (or `.env`) and adjust values.
+Copy `.env.example` to `.env.local` (or `.env`) and adjust the values.
 
-- Public vars must be prefixed with `NEXT_PUBLIC_`.
+Required
+
+- OPENAI_API_KEY — Your OpenAI API key (e.g., `sk-...`).
+- NEXTAUTH_SECRET — A random 32+ character string used to sign NextAuth JWTs. Generate with `openssl rand -base64 32`.
+- NEXTAUTH_URL — The base URL of your app.
+  - Local dev: `http://localhost:3000`
+  - Vercel prod: `https://your-app.vercel.app`
+- SUPABASE_URL — Your Supabase project URL (e.g., `https://<project-ref>.supabase.co`).
+- SUPABASE_ANON_KEY — Your Supabase anon public key (JWT).
+- EMAIL_FROM — The email address used as the "from" sender (e.g., `noreply@yourdomain.com`).
+
+Optional
+
+- SUPABASE_SERVICE_ROLE — Supabase service role key for server-side admin tasks only. Do not expose to the client.
+- RESEND_API_KEY — If using Resend to send emails (e.g., `re_...`).
+
+Region notes
+
+- Choose a Supabase project region close to your Vercel deployment region to minimize latency.
+- For local development, set `NEXTAUTH_URL` to `http://localhost:3000`. In production on Vercel, set it to your canonical `https://<your-app>.vercel.app` (or your custom domain) to avoid callback/domain mismatch issues.
 
 ## Pre-commit hooks
 
