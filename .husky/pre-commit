@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run lint-staged to lint and format staged files
+if command -v pnpm >/dev/null 2>&1; then
+  pnpm exec lint-staged
+elif command -v npx >/dev/null 2>&1; then
+  npx lint-staged
+else
+  echo "Skipping lint-staged (pnpm/npx not found)"
+fi
