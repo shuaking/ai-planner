@@ -13,6 +13,11 @@ function getToken(req: NextApiRequest): string | undefined {
 }
 
 async function ensureSchema() {
+  // Only handle SQLite here; for Postgres/Supabase we rely on Prisma migrations.
+  const dbUrl = process.env.DATABASE_URL || '';
+  const isSQLite = dbUrl.startsWith('file:') || dbUrl.includes('mode=memory');
+  if (!isSQLite) return;
+
   // Create tables if they do not exist (SQLite dialect by default)
   // This makes the endpoint idempotent and avoids relying on running CLI in the serverless runtime.
   await prisma.$executeRawUnsafe(
