@@ -109,3 +109,41 @@ GitHub Actions workflow is defined in `.github/workflows/ci.yml` and runs on pus
 ## Notes
 
 - This is a starting point; extend as needed (tests, packages, etc.).
+
+## Auth: NextAuth email magic link via Supabase SMTP
+
+This app is configured to use NextAuth Email provider with magic links and Prisma (Postgres) for persistence. Emails are sent via SMTP. For Supabase, use the SMTP credentials from Project Settings > SMTP.
+
+Environment variables to set (see .env.example):
+
+- EMAIL_FROM — The verified sender address used in emails.
+- EMAIL_SERVER_HOST — Supabase SMTP host.
+- EMAIL_SERVER_PORT — Supabase SMTP port (typically 587).
+- EMAIL_SERVER_USER — Supabase SMTP username.
+- EMAIL_SERVER_PASSWORD — Supabase SMTP password.
+- NEXTAUTH_SECRET — Random string used to sign JWTs.
+- NEXTAUTH_URL — Base URL of your app (http://localhost:3000 in dev).
+- DATABASE_URL — Postgres connection string (Supabase or local).
+
+Local development steps:
+
+1) Set environment variables
+- Copy .env.example to apps/web/.env.local or project root .env (supported by Next.js) and fill in the values above.
+
+2) Generate Prisma Client and apply schema
+- pnpm install
+- pnpm --filter web prisma generate
+- If using Postgres: run Prisma migrations (or apply your schema):
+  - pnpm exec prisma migrate dev --schema apps/web/prisma/schema.prisma
+
+3) Start the app
+- pnpm dev
+
+4) Test magic link login
+- Visit http://localhost:3000/auth/signin
+- Enter your email, then click the magic link you receive
+- You should be redirected to /dashboard and see a Sign out button
+
+Protected routes
+
+- /dashboard is protected by middleware. Unauthenticated users are redirected to /auth/signin.
