@@ -26,3 +26,6 @@ dist
 .env
 .env.local
 .env.*.local
+
+# Databases
+apps/web/prisma/*.db

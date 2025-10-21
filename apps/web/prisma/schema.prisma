@@ -1,0 +1,29 @@
+// Prisma schema for the web app
+// Default to SQLite for local development. You can switch to PostgreSQL/MySQL by
+// changing the provider and DATABASE_URL.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Setting {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Template {
+  id        Int      @id @default(autoincrement())
+  slug      String   @unique
+  name      String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
